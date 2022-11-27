@@ -72,7 +72,7 @@ namespace HomeApi.Controllers
         /// Обновление существующего устройства
         /// </summary>
         [HttpPatch] 
-        [Route("{id}")] 
+        [Route("{id2}")] 
         public async Task<IActionResult> Edit(
             [FromRoute] Guid id,
             [FromBody]  EditDeviceRequest request)
@@ -111,5 +111,6 @@ namespace HomeApi.Controllers
             return StatusCode(200, $"Устройство удалено! Имя - {device.Name}, Серийный номер - {device.SerialNumber},  Комната подключения - {device.Room.Name}");
         }
 
+       
     }
 }

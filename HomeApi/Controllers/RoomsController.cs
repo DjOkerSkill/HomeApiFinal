@@ -2,6 +2,7 @@
 using AutoMapper;
 using HomeApi.Contracts.Models.Rooms;
 using HomeApi.Data.Models;
+using HomeApi.Data.Queries;
 using HomeApi.Data.Repos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,6 +42,19 @@ namespace HomeApi.Controllers
             }
             
             return StatusCode(409, $"Ошибка: Комната {request.Name} уже существует.");
+        }
+
+        [HttpPut]
+        [Route("")]
+        public async Task<IActionResult> Edit([FromBody] EditRoomRequest request)
+        {
+            var room = await _repository.GetRoomByName(request.Name);
+            if (room == null)
+                return StatusCode(400, $"Ошибка: Комната {request.Name} не подключена. Сначала подключите комнату!");
+
+           await _repository.UpdateRoom(room, new UpdateRoomQuery(request.Name, request.NewVoltage));
+
+            return StatusCode(200, $"Комната обновлена! Имя - {room.Name}, Площадь - {room.Area},  Напряжение в комнате - {room.Voltage}");
         }
     }
 }
